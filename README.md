@@ -3,7 +3,7 @@
 <p align="left">
     <a alt="EDA">
         <img src="https://img.shields.io/badge/%20-EDA%20-orange" /></a>
-    <a alt="Clustering">
+    <a alt="Classification">
         <img src="https://img.shields.io/badge/%20-Classification%20-orange" /></a>
 </p>
 
