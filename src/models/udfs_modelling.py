@@ -188,12 +188,8 @@ def get_stats_by_gender(X, y, model, group_one, with_gender=True):
     preds = model.predict(X)
     y_zero = y[group_one==False]
     preds_zero = preds[group_one==False]
-    X_zero = X[group_one==False]
     y_one = y[group_one]
     preds_one = preds[group_one]
-    X_one = X[group_one]
-    # preds_one = preds[group_one]
-    # X_one = X[group_one]
 
     print("1. Demographic parity / statistical parity")
     print("\nTotal observations:", len(preds))
@@ -203,12 +199,18 @@ def get_stats_by_gender(X, y, model, group_one, with_gender=True):
     print("Group 1:", len(preds_one), "({}%)".format(pct_one))
 
     print("\nTotal approvals:", preds.sum())
-    approvals_zero = round(preds_zero.sum()/sum(preds)*100, 2)
-    approvals_one = round(preds_one.sum()/sum(preds)*100, 2)
+    approvals_zero_to_all = round(preds_zero.sum()/sum(preds)*100, 2)
+    approvals_one_to_all = round(preds_one.sum()/sum(preds)*100, 2)
+    approvals_zero_to_females = round(preds_zero.sum()/len(preds_zero)*100, 2)
+    approvals_one_to_males = round(preds_one.sum()/len(preds_one)*100, 2)
     print("Group 0:", preds_zero.sum(),
-          "({}% of approvals)".format(approvals_zero))
+          "({}% of all approvals)".format(approvals_zero_to_all),
+          "({}% of female approvals)".format(approvals_zero_to_females)
+          )
     print("Group 1:", preds_one.sum(),
-          "({}% of approvals)".format(approvals_one))
+          "({}% of approvals)".format(approvals_one_to_all),
+          "({}% of female approvals)".format(approvals_one_to_males)
+          )
 
     print("\n2. Equal opportunity")
     cm_zero = get_confusion_matrix(y_zero, preds_zero)
