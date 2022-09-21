@@ -5,6 +5,15 @@ import pandas as pd
 import numpy as np
 
 ################################################
+# PARAMS
+################################################
+data_raw_location = 'data/raw/'
+data_processed_location = 'data/processed/'
+raw_application_filename = 'application_record.csv'
+raw_credit_hist_filename = 'credit_record.csv'
+processed_data_filename = 'df_application_record_classified_raw.pickle'
+
+################################################
 # LOAD DATA
 ################################################
 def lower_cols(df):
@@ -12,11 +21,11 @@ def lower_cols(df):
     return df
 
 
-df_application_record = pd.read_csv("data/raw/application_record.csv")
+df_application_record = pd.read_csv(data_raw_location + raw_application_filename)
 df_application_record = lower_cols(df_application_record)
 
 
-df_credit_record = pd.read_csv("data/raw/credit_record.csv")
+df_credit_record = pd.read_csv(data_raw_location + raw_credit_hist_filename)
 df_credit_record = lower_cols(df_credit_record)
 
 ################################################
@@ -87,4 +96,4 @@ df_merged.occupation_type = df_merged.occupation_type.fillna("Unknown")
 ################################################
 # SAVE DATA
 ################################################
-df_merged.to_pickle('data/processed/df_application_record_classified_raw.pickle')
+df_merged.to_pickle(data_processed_location + processed_data_filename)

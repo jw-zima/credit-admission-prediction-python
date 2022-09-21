@@ -19,9 +19,9 @@ from sklearn.compose import ColumnTransformer
 # PARAMS
 ################################################
 seed = 12345
-data_location = 'data/processed/'
+data_processed_location = 'data/processed/'
 model_location = 'models/'
-data_filename = 'df_application_record_classified_post_feature_eng.pickle'
+feat_eng_processed_data_filename = 'df_application_record_classified_post_feature_eng.pickle'
 target_name = 'target'
 nb_pca_components = 3
 test_size = 0.2
@@ -71,7 +71,7 @@ class MultiColumnLabelEncoder:
 ################################################
 # DATA LOAD
 ################################################
-df_merged = pd.read_pickle(data_location + data_filename)
+df_merged = pd.read_pickle(data_processed_location + feat_eng_processed_data_filename)
 
 y = df_merged[target_name]
 X = df_merged.drop(target_name, axis=1)

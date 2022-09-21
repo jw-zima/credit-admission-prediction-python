@@ -7,7 +7,11 @@ import numpy as np
 ################################################
 # LOAD DATA
 ################################################
-df_merged = pd.read_pickle('data/processed/df_application_record_classified_raw.pickle')
+data_processed_location = 'data/processed/'
+processed_data_filename = 'df_application_record_classified_raw.pickle'
+feat_eng_processed_data_filename = 'df_application_record_classified_post_feature_eng.pickle'
+
+df_merged = pd.read_pickle(data_processed_location + processed_data_filename)
 
 ################################################
 # FEATURE ENGINEERING
@@ -38,4 +42,4 @@ df_merged = df_merged.drop(['flag_mobil', 'flag_work_phone', 'flag_phone',
 ################################################
 # SAVE DATA
 ################################################
-df_merged.to_pickle('data/processed/df_application_record_classified_post_feature_eng.pickle')
+df_merged.to_pickle(data_processed_location + feat_eng_processed_data_filename)
