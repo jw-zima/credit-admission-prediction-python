@@ -130,6 +130,7 @@ dmypy.json
 
 # datasets
 data/interim/model_training_*
+data/processed/df_*
 
 # models
 models/*
