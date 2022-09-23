@@ -5,6 +5,8 @@
         <img src="https://img.shields.io/badge/%20-EDA%20-orange" /></a>
     <a alt="Classification">
         <img src="https://img.shields.io/badge/%20-Classification%20-orange" /></a>
+    <a alt="Model fairness">
+        <img src="https://img.shields.io/badge/%20-Model%20fairness%20-orange" /></a>
 </p>
 
 ## General info
@@ -23,6 +25,20 @@ Dataset comes from the **kaggle** platform.
         <img src="https://img.shields.io/badge/%20-Jupyter%20Notebook%20-blue" /></a>
     <a alt="python">
         <img src="https://img.shields.io/badge/%20-python%20-blue" /></a>
+  </p>
+  <p align="left">
+    <a alt="lgbm">
+        <img src="https://img.shields.io/badge/%20-lgbm%20-blue" /></a>
+    <a alt="Random Forest">
+        <img src="https://img.shields.io/badge/%20-Random%20Forest%20-blue" /></a>
+    <a alt="HyperOpt">
+        <img src="https://img.shields.io/badge/%20-HyperOpt%20-blue" /></a>
+    </p>
+    <p align="left">
+    <a alt="sklearn Pipeline">
+        <img src="https://img.shields.io/badge/%20-sklearn%20Pipeline%20-blue" /></a>
+    <a alt="imblearn Pipeline">
+        <img src="https://img.shields.io/badge/%20-sklearn%20Pipeline%20-blue" /></a>
 </p>
 
 Additionally pre-commit add-ins were used:
@@ -41,7 +57,16 @@ The datasets [Credit Card Approval Prediction](https://www.kaggle.com/datasets/r
 * application_record.csv
 * credit_record.csv
 
+## Content
 
+1. Primarily data exploration, feature selection and relationship with target analysis was performed in the Jupiter Notebooks.
+2. Similarly, model class selection as well as parameters finetuning ware performed in notebooks. Two model classes that were performing best on default settings (lgbm and Random Forest) were selected for the finetuning using **[HyperOpt](http://hyperopt.github.io/hyperopt/)** (Hyperparameter Tuning based on Bayesian Optimization).
+3. Prediction threshold selection was performed in order to optimize f1 score.
+4. Additionally, exercise to verify model fairness and influence of the gender on model predictions was performed.
+4. Data reading, gathering, feature engineering and data preprocessing as well as model training and evaluation methods were gathered and cleaned in src folder.
+Data preprocessing and resampling was performed using sklearn and imblearn Pipelines.
+5. Model can be retrained on new data using single main.py script.
+All relevant parameters are separated from the code and stored in params.py
 
 --------
 ## How to run it
