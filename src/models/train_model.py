@@ -9,7 +9,9 @@ from imblearn.pipeline import Pipeline
 from imblearn.pipeline import make_pipeline
 from sklearn.compose import make_column_transformer
 from sklearn.compose import ColumnTransformer
-from src.utils.utils import read_pickle_data, save_model
+from src.utils.utils import read_pickle_data, save_model, save_train_test_data
+from src.models.udfs_modelling import summarise_metrices, get_confusion_matrix
+from src.models.udfs_modelling import reclassify_by_treshold
 
 
 class MultiColumnLabelEncoder:
@@ -121,7 +123,9 @@ def model_training_main(data_processed_location,
                         test_size, one_hot_min_frequency,
                         under_sampler_strategy, over_sampler_strategy,
                         tomek_sampler_strategy,
-                        params_rf, model_location, model_filename, seed):
+                        train_test_data_filename,
+                        params_rf, model_location, model_filename,
+                        prediction_threshold, seed):
     print("LOAD DATA")
     df_merged = read_pickle_data(data_processed_location,
                                  gathered_feat_eng_data_filename)
@@ -152,9 +156,19 @@ def model_training_main(data_processed_location,
     print("MODEL FITTING")
     rf_model = fit_rf_model(X_train, y_train, params_rf)
 
-    #TODO: reuse "save_intermin_data_and_model" to save data as well
+    print("DATA SAVING")
+    save_train_test_data(X_train, y_train, X_test, y_test,
+                         data_processed_location, train_test_data_filename)
+
     print("MODEL SAVING")
     save_model(rf_model, model_location, model_filename)
+
+    print("MODEL PERFORMANCE")
+    y_test_predictions = rf_model.predict_proba(X_test)
+    y_test_predictions = reclassify_by_treshold(y_test_predictions,
+                                                prediction_threshold)
+    print(summarise_metrices(y_test, y_test_predictions))
+    print(get_confusion_matrix(y_test, y_test_predictions))
 
 
 if __name__ == "__main__":
@@ -162,6 +176,7 @@ if __name__ == "__main__":
     data_processed_location = 'data/processed/'
     model_location = 'models/'
     gathered_feat_eng_data_filename = 'df_gathered_post_feature_eng.pickle'
+    train_test_data_filename = 'df_train_test_rf'
     target_name = 'target'
     numeric_cols_to_scale = ['cnt_children', 'amt_income_total',
                              'cnt_fam_members', 'amt_income_per_person',
@@ -188,4 +203,5 @@ if __name__ == "__main__":
                         test_size, one_hot_min_frequency,
                         under_sampler_strategy, over_sampler_strategy,
                         tomek_sampler_strategy,
+                        train_test_data_filename,
                         params_rf, model_location, model_filename, seed)

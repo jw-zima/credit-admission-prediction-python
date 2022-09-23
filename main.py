@@ -28,8 +28,10 @@ if __name__ == "__main__":
                         params.under_sampler_strategy,
                         params.over_sampler_strategy,
                         params.tomek_sampler_strategy,
+                        params.train_test_data_filename,
                         params.params_rf,
                         params.model_location, params.model_filename,
+                        params.prediction_threshold,
                         params.seed)
 
     print("##### DONE #####")
