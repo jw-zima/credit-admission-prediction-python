@@ -82,6 +82,12 @@ mlflow ui
 ```
 and open  http://localhost:5000 in your browser.
 
+![](/references/MLflow1.PNG)
+
+![](/references/MLflow2.PNG)
+
+![](/references/MLflow3.PNG)
+
 --------
 
 ## How to run it
@@ -131,7 +137,8 @@ ________________
     │                         and train the model.
     │                         Parameters are separated from the code, all stored in one place.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── references         <- Data dictionaries, manuals, MLFlow ui screen shots, and all other
+    │                         explanatory materials.
     │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
