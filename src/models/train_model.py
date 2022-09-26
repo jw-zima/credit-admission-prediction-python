@@ -12,6 +12,9 @@ from sklearn.compose import ColumnTransformer
 from src.utils.utils import read_pickle_data, save_model, save_train_test_data
 from src.models.udfs_modelling import summarise_metrices, get_confusion_matrix
 from src.models.udfs_modelling import reclassify_by_treshold
+import mlflow
+import mlflow.sklearn
+from urllib.parse import urlparse
 
 
 class MultiColumnLabelEncoder:
@@ -32,7 +35,7 @@ class MultiColumnLabelEncoder:
             for col in self.columns:
                 output[col] = LabelEncoder().fit_transform(output[col])
         else:
-            for colname, col in output.iteritems():
+            for colname, col in output.items():
                 output[colname] = LabelEncoder().fit_transform(col)
         return output
 
@@ -126,6 +129,13 @@ def model_training_main(data_processed_location,
                         train_test_data_filename,
                         params_rf, model_location, model_filename,
                         prediction_threshold, seed):
+
+    print("LOG PARAMS")
+    param_keys = list(locals().keys())
+    param_values = list(locals().values())
+    for i in list(range(len(param_keys))):
+        print(param_keys[i] + ": " + str(param_values[i]))
+
     print("LOAD DATA")
     df_merged = read_pickle_data(data_processed_location,
                                  gathered_feat_eng_data_filename)
@@ -153,22 +163,48 @@ def model_training_main(data_processed_location,
                                      over_sampler_strategy,
                                      tomek_sampler_strategy, seed)
 
-    print("MODEL FITTING")
-    rf_model = fit_rf_model(X_train, y_train, params_rf)
+    with mlflow.start_run():
+        print("MODEL FITTING")
+        rf_model = fit_rf_model(X_train, y_train, params_rf)
 
-    print("DATA SAVING")
-    save_train_test_data(X_train, y_train, X_test, y_test,
-                         data_processed_location, train_test_data_filename)
+        print("DATA SAVING")
+        save_train_test_data(X_train, y_train, X_test, y_test,
+                             data_processed_location, train_test_data_filename)
 
-    print("MODEL SAVING")
-    save_model(rf_model, model_location, model_filename)
+        print("MODEL SAVING")
+        save_model(rf_model, model_location, model_filename)
 
-    print("MODEL PERFORMANCE")
-    y_test_predictions = rf_model.predict_proba(X_test)
-    y_test_predictions = reclassify_by_treshold(y_test_predictions,
-                                                prediction_threshold)
-    print(summarise_metrices(y_test, y_test_predictions))
-    print(get_confusion_matrix(y_test, y_test_predictions))
+        print("MODEL PERFORMANCE")
+        y_test_predictions = rf_model.predict_proba(X_test)
+        y_test_predictions = reclassify_by_treshold(y_test_predictions,
+                                                    prediction_threshold)
+        average_precision, f1, precision, recall = summarise_metrices(
+            y_test, y_test_predictions)
+        _ = get_confusion_matrix(y_test, y_test_predictions)
+
+        print("LOG PARAMS AND METRICS TO MLFLOW")
+        for i in list(range(len(param_keys))):
+            if (not(param_keys[i] == 'params_rf')):
+                mlflow.log_param(param_keys[i], param_values[i])
+        mlflow.log_param("class_weight", params_rf["class_weight"])
+        mlflow.log_param("criterion", params_rf["criterion"])
+        mlflow.log_param("max_depth", params_rf["max_depth"])
+        mlflow.log_param("max_features", params_rf["max_features"])
+        mlflow.log_param("n_estimators", params_rf["n_estimators"])
+
+        mlflow.log_metric("average_precision", average_precision)
+        mlflow.log_metric("f1", f1)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall)
+
+        tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        # Model registry does not work with file store
+        if tracking_url_type_store != "file":
+            # Register the model
+            mlflow.sklearn.log_model(rf_model, "model",
+                                     registered_model_name="RF_Classification")
+        else:
+            mlflow.sklearn.log_model(rf_model, "model")
 
 
 if __name__ == "__main__":
@@ -205,4 +241,5 @@ if __name__ == "__main__":
                         under_sampler_strategy, over_sampler_strategy,
                         tomek_sampler_strategy,
                         train_test_data_filename,
-                        params_rf, model_location, model_filename, seed)
+                        params_rf, model_location, model_filename,
+                        prediction_threshold, seed)

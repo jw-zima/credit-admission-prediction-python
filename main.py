@@ -4,9 +4,6 @@ from src.models.train_model import model_training_main
 import params
 
 if __name__ == "__main__":
-    print(params.data_raw_location)
-    print(params.seed)
-
     print("##### DATA GATHERING #####")
     data_gathering_main(params.data_raw_location,
                         params.data_processed_location,

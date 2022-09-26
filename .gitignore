@@ -134,3 +134,6 @@ data/processed/df_*
 
 # models
 models/*
+
+# model experiments
+mlruns/0/*

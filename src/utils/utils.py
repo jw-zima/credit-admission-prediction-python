@@ -48,5 +48,12 @@ def save_train_test_data(X_train_data, y_train_data, X_test_data, y_test_data,
     outfile.close()
 
 
+def read_train_test_data(folder_location, data_filename):
+    infile = open(folder_location + data_filename, 'rb')
+    loaded_dict = pickle.load(infile)
+    infile.close()
+    return loaded_dict
+
+
 if __name__ == "__main__":
     print("hello")

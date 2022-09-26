@@ -58,12 +58,17 @@ def summarise_metrices(y_test, y_hat):
     Examples:
     >>> summarise_metrices(y_test = y_test, y_hat = test_predictions_lgbm)
     """
-    print("average_precision test: " +
-          str(round(average_precision_score(y_test, y_hat), 2)))
-    print("f1 test: " + str(round(f1_score(y_test, y_hat), 2)))
-    print("precision test: " + str(round(precision_score(y_test, y_hat), 2)))
-    print("recall test: " + str(round(recall_score(y_test, y_hat), 2)))
+    average_precision = average_precision_score(y_test, y_hat)
+    f1 = f1_score(y_test, y_hat)
+    precision = precision_score(y_test, y_hat)
+    recall = recall_score(y_test, y_hat)
 
+    print("average_precision test: " + str(round(average_precision, 2)))
+    print("f1 test: " + str(round(f1, 2)))
+    print("precision test: " + str(round(precision, 2)))
+    print("recall test: " + str(round(recall, 2)))
+
+    return average_precision, f1, precision, recall
 
 def get_confusion_matrix(y_test, y_hat):
     """Computes and renames rows & columns of the confusion matrix
@@ -79,6 +84,7 @@ def get_confusion_matrix(y_test, y_hat):
     cm = pd.DataFrame(data=cm,
                       columns=['Actual Negative:0', 'Actual Positive:1'],
                       index=['Predict Negative:0', 'Predict Positive:1'])
+    print(cm)
     return cm
 
 
