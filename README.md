@@ -5,6 +5,8 @@
         <img src="https://img.shields.io/badge/%20-EDA%20-orange" /></a>
     <a alt="Classification">
         <img src="https://img.shields.io/badge/%20-Classification%20-orange" /></a>
+    <a alt="Experiment tracking">
+        <img src="https://img.shields.io/badge/%20-Experiment%20tracking%20-orange" /></a>
     <a alt="Model fairness">
         <img src="https://img.shields.io/badge/%20-Model%20fairness%20-orange" /></a>
 </p>
@@ -40,6 +42,10 @@ Dataset comes from the **kaggle** platform.
     <a alt="imblearn Pipeline">
         <img src="https://img.shields.io/badge/%20-sklearn%20Pipeline%20-blue" /></a>
 </p>
+<p align="left">
+<a alt="MLflow">
+    <img src="https://img.shields.io/badge/%20-MLflow%20-blue" /></a>
+</p>
 
 Additionally pre-commit add-ins were used:
 <p align="left">
@@ -59,18 +65,25 @@ The datasets [Credit Card Approval Prediction](https://www.kaggle.com/datasets/r
 
 ## Content
 
-1. Primarily data exploration, feature selection and relationship with target analysis was performed in the Jupiter Notebooks.
-2. Similarly, model class selection as well as parameters finetuning ware performed in notebooks. Two model classes that were performing best on default settings (lgbm and Random Forest) were selected for the finetuning using **[HyperOpt](http://hyperopt.github.io/hyperopt/)** (Hyperparameter Tuning based on Bayesian Optimization).
+1. Primarily data exploration, feature selection and relationship with target analysis was performed in the **Jupiter Notebooks**.
+2. Similarly, model class selection as well as parameters finetuning ware performed in notebooks. Two model classes that were performing best on default settings (**lgbm and Random Forest**) were selected for the finetuning using **[HyperOpt](http://hyperopt.github.io/hyperopt/) (Hyperparameter Tuning based on Bayesian Optimization**).
 3. Prediction threshold selection was performed in order to optimize f1 score.
-4. Additionally, exercise to verify model fairness and influence of the gender on model predictions was performed.
+4. Additionally, exercise to verify **model fairness** and influence of the gender on model predictions was performed. Analysis stored in *./notebooks/4.0-jw-model-fairness-analysis.ipynb*.
 4. Data reading, gathering, feature engineering and data preprocessing as well as model training and evaluation methods were gathered and cleaned in src folder.
-Data preprocessing and resampling was performed using sklearn and imblearn Pipelines.
-5. Model can be retrained on new data using single main.py script.
-All relevant parameters are separated from the code and stored in params.py
-
+Data preprocessing and resampling was performed using **sklearn and imblearn Pipelines**.
+5. Model can be retrained on new data using single *main.py* script.
+All relevant parameters are separated from the code and stored in *params.py*
+```zsh
+python ./main.py
+```
+6. Each model training is being tracked with **MLflow**. Experiments are stored in *./mlruns folder*. After running at least one model training (point5). in order to launch the web dashboard type in terminal:
+```zsh
+mlflow ui
+```
+and open  http://localhost:5000 in your browser.
 --------
 ## How to run it
-Run the following command in the bash terminal:
+Run the following command in the bash terminal to run all steps up to a model training:
 
 ```zsh
 python ./main.py
@@ -143,12 +156,10 @@ ________________
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
-
-
+--------
 ## Contributors
 
 jw-zima
 
---------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
