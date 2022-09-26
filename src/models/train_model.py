@@ -195,6 +195,7 @@ if __name__ == "__main__":
         'max_features': None,
         'n_estimators': 137
     }
+    prediction_threshold = 0.84
 
     print("##### MODEL TRAINING #####")
     model_training_main(data_processed_location,
