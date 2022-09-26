@@ -76,12 +76,14 @@ All relevant parameters are separated from the code and stored in *params.py*
 ```zsh
 python ./main.py
 ```
-6. Each model training is being tracked with **MLflow**. Experiments are stored in *./mlruns folder*. After running at least one model training (point5). in order to launch the web dashboard type in terminal:
+6. Each model training is being tracked with **[MLflow](https://www.mlflow.org/)**. Experiments are stored in *./mlruns folder*. After running at least one model training (point5). in order to launch the web dashboard type in terminal:
 ```zsh
 mlflow ui
 ```
 and open  http://localhost:5000 in your browser.
+
 --------
+
 ## How to run it
 Run the following command in the bash terminal to run all steps up to a model training:
 
@@ -116,6 +118,9 @@ ________________
     │
     ├── main.py            <- Script with all steps required to retain the classification model
     │
+    ├── mlruns             <- Folder storing artifacts, metrics, params, tags and metadata
+    │                         for each model training experiment
+    │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
     │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
@@ -123,7 +128,8 @@ ________________
     │                         `1.0-jqp-initial-data-exploration`.
     │
     ├── params.py          <- Keeps all parameters required to point to the data, preprocess them
-    │                         and train the model. Parameters are separated from the code, all stored in one place.
+    │                         and train the model.
+    │                         Parameters are separated from the code, all stored in one place.
     │
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
